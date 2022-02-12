@@ -40,6 +40,6 @@ io.on("connect", (socket) => {
   });
 });
 
-server.listen(port, () => {
+server.listen(PORT, () => {
   console.log("listening on *:3000");
 });
