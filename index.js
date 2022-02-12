@@ -43,4 +43,3 @@ io.on("connect", (socket) => {
 server.listen(port, () => {
   console.log("listening on *:3000");
 });
-import VueHighlightJS from "vue3-highlightjs";
