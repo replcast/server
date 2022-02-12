@@ -38,6 +38,10 @@ io.on("connect", (socket) => {
     console.log("Updating cast");
     io.to(socket.room).emit("updateCast", e);
   });
+
+  socket.on("killCast", (id) => {
+    io.in(socket.room).disconnectSockets();
+  });
 });
 
 server.listen(PORT, () => {
