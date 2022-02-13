@@ -20,14 +20,15 @@ io.on("connect", (socket) => {
   console.log("Socket joined at ID", socket.id);
 
   socket.on("joinCast", (e) => {
-    socket.room = e.id;
-    console.log(`${socket.id} is joining cast ${e.id}`);
-    socket.join(e.id);
+    socket.data.room = e;
+    console.log(`${socket.id} is joining cast ${e}`);
+    socket.join(e);
   });
 
   socket.on("serveCast", () => {
-    console.log("Serving");
     const id = cryptoRandomString({ length: 8 });
+    socket.data.room = id;
+    console.log("Serving new cast at ID", id);
     io.to(socket.id).emit("castId", {
       id,
     });
@@ -35,8 +36,10 @@ io.on("connect", (socket) => {
   });
 
   socket.on("updateCast", (e) => {
-    console.log("Updating cast");
-    io.to(socket.room).emit("updateCast", e);
+    io.to(socket.data.room).emit("updateCast", {
+      content: e.content,
+      cursorPosition: e.cursorPosition,
+    });
   });
 
   socket.on("killCast", (id) => {
@@ -45,5 +48,5 @@ io.on("connect", (socket) => {
 });
 
 server.listen(PORT, () => {
-  console.log("listening on *:3000");
+  console.log("listening on port", PORT);
 });
